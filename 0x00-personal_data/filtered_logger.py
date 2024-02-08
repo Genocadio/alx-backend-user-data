@@ -37,7 +37,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    ''' get_db method '''
+    ''' get_db method for mysql connection'''
     connection = mysql.connector.connect(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
@@ -63,3 +63,24 @@ def get_logger() -> logging.Logger:
 
     logger.addHandler(stream_handler)
     return logger
+
+
+def main() -> None:
+    ''' main method '''
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users")
+    logger = get_logger()
+    headers = [i[0] for i in cursor.description]
+    for row in cursor:
+        row_str = ''
+        for x, z in zip(headers, row):
+            row_str += f'{x}={z}; '
+        logger.info(row_str)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
