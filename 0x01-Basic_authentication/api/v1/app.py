@@ -27,6 +27,7 @@ def unauthorized(error) -> str:
     """
     return jsonify({"error": "Unauthorized"}), 401
 
+
 @app.route('/api/v1/unauthorized', methods=['GET'], strict_slashes=False)
 def unauth() -> str:
     """ GET /api/v1/unauthorized
