@@ -18,10 +18,26 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 def not_found(error) -> str:
     """ Not found handler
     """
-    if request.path == '/api/v1/unauthorized':
-        return jsonify({"error": "Unauthorized"}), 401
-    else:
-        return jsonify({"error": "Not found"}), 404
+    return jsonify({"error": "Not found"}), 404
+
+
+@app.errorhandler(401)
+def unauthorized(error) -> str:
+    """ Unauthorized handler
+    """
+    return jsonify({"error": "Unauthorized"}), 401
+
+@app.route('/api/v1/unauthorized', methods=['GET'], strict_slashes=False)
+def unauth() -> str:
+    """ GET /api/v1/unauthorized
+    Return:
+      - the status of the API
+    """
+    resource = None
+    if resource is None:
+        abort(404, description="Resource not found")
+
+    return jsonify(resource)
 
 
 if __name__ == "__main__":
