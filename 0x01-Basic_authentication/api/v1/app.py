@@ -29,10 +29,8 @@ def unauthorized(error):
 @app.errorhandler(404)
 def not_found(error):
     """ Not found handler """
-    if request.path == '/api/v1/unauthorized':
-        abort(401)
-    else:
-        return jsonify({"error": "Not found"}), 404
+    return jsonify({"error": "Not found"}), 404
+
 
 @app.before_request
 def authenticate_user():
