@@ -21,7 +21,7 @@ AUTH_TYPE = getenv("AUTH_TYPE")
 
 if AUTH_TYPE == "auth":
     auth = Auth()
-elif AUTH_TYPE == "basic_auth":
+else AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
 
 
@@ -49,7 +49,6 @@ def forbidden(error) -> str:
 @app.before_request
 def before_request() -> str:
     """ Before Request Handler
-    Requests Validation
     """
     if auth is None:
         return
