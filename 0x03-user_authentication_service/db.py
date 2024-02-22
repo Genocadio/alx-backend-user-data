@@ -50,6 +50,6 @@ class DB:
         try:
             return self._session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
-            raise ValueError
+            raise ValueError()
         except InvalidRequestError:
-            raise ValueError
+            raise ValueError()
