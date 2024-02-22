@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Flask app module
 """
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, redirect
 from auth import Auth
 
 
@@ -52,15 +52,19 @@ def login() -> str:
     return response
 
 
-@app.route('/sessions/<session_id>', methods=['DELETE'], strict_slashes=False)
-def logout(session_id: str) -> str:
-    """DELETE /sessions/<session_id>
-    Return: {"message": "Bienvenue"}
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> str:
+    """DELETE /sessions
+    Return:
+        - Redirect to GET / if session is destroyed.
+        - 403 HTTP status if session does not exist.
     """
     auth = Auth()
-    if not auth.destroy_session(session_id):
+    session_id = request.cookies.get("session_id")
+    if session_id is None or not auth.get_user_from_session_id(session_id):
         abort(403)
-    return jsonify({"message": "Bienvenue"})
+    auth.destroy_session(session_id)
+    return redirect("/", code=302)
 
 
 if __name__ == "__main__":
