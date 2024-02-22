@@ -47,7 +47,6 @@ class DB:
         Returns:
             User: A User object representing the new user.
         """
-        # Create new user
         new_user = User(email=email, hashed_password=hashed_password)
         try:
             self._session.add(new_user)
@@ -59,14 +58,7 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs: Dict[str, str]) -> User:
-        """Find a user by specified attributes.
-
-        Raises:
-            error: NoResultFound: When no results are found.
-            error: InvalidRequestError: When invalid query arguments are passed
-
-        Returns:
-            User: First row found in the `users` table.
+        """Find a user by a given attribute.ss
         """
         session = self._session
         try:
@@ -75,7 +67,6 @@ class DB:
             raise NoResultFound()
         except InvalidRequestError:
             raise InvalidRequestError()
-        # print("Type of user: {}".format(type(user)))
         return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
