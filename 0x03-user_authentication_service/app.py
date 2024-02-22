@@ -52,5 +52,16 @@ def login() -> str:
     return response
 
 
+@app.route('/sessions/<session_id>', methods=['DELETE'], strict_slashes=False)
+def logout(session_id: str) -> str:
+    """DELETE /sessions/<session_id>
+    Return: {"message": "Bienvenue"}
+    """
+    auth = Auth()
+    if not auth.destroy_session(session_id):
+        abort(403)
+    return jsonify({"message": "Bienvenue"})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
