@@ -46,8 +46,6 @@ def login() -> str:
     """
     email = request.form.get("email")
     password = request.form.get("password")
-    if email is None or password is None:
-        return jsonify({"message": "email and password required"}), 400
     auth = Auth()
     if not auth.valid_login(email, password):
         abort(401)
